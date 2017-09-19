@@ -195,8 +195,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     String[] simpleJsonWeatherData = OpenWeatherJsonUtils
                             .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
-
-                    return simpleJsonWeatherData;
+     return simpleJsonWeatherData;
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;

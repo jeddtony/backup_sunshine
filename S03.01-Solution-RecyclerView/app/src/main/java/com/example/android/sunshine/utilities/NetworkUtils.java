@@ -33,10 +33,10 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String DYNAMIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/weather";
+            "http://api.openweathermap.org/data/2.5/forecast/daily?";
 
     private static final String STATIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/staticweather";
+            "http://api.openweathermap.org/data/2.5/forecast/daily?";
 
     private static final String FORECAST_BASE_URL = STATIC_WEATHER_URL;
 
@@ -53,6 +53,7 @@ public final class NetworkUtils {
     private static final String units = "metric";
     /* The number of days we want our API to return */
     private static final int numDays = 14;
+    private static final String appid = "d3e3f4ea446950efa270f8fd01e65ca7";
 
     final static String QUERY_PARAM = "q";
     final static String LAT_PARAM = "lat";
@@ -60,6 +61,7 @@ public final class NetworkUtils {
     final static String FORMAT_PARAM = "mode";
     final static String UNITS_PARAM = "units";
     final static String DAYS_PARAM = "cnt";
+    final static String APPID_PARAM = "appid";
 
     /**
      * Builds the URL used to talk to the weather server using a location. This location is based
@@ -74,6 +76,7 @@ public final class NetworkUtils {
                 .appendQueryParameter(FORMAT_PARAM, format)
                 .appendQueryParameter(UNITS_PARAM, units)
                 .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                .appendQueryParameter(APPID_PARAM, appid)
                 .build();
 
         URL url = null;

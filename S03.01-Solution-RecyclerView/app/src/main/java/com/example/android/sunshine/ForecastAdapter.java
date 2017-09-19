@@ -26,16 +26,22 @@ import android.widget.TextView;
 // COMPLETED (22) Extend RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder>
 /**
  * {@link ForecastAdapter} exposes a list of weather forecasts to a
- * {@link android.support.v7.widget.RecyclerView}
+ * {@link RecyclerView}
  */
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
     // COMPLETED (23) Create a private string array called mWeatherData
     private String[] mWeatherData;
+    final private ListItemClickListener mOnClickListener;
 
     // COMPLETED (47) Create the default constructor (we will pass in parameters in a later lesson)
-    public ForecastAdapter() {
+    public ForecastAdapter(ListItemClickListener listener) {
+        mOnClickListener = listener;
 
+    }
+
+    public interface ListItemClickListener{
+        void onItemClickListener(String weatherForDay);
     }
 
     // COMPLETED (16) Create a class within ForecastAdapter called ForecastAdapterViewHolder
@@ -43,9 +49,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     /**
      * Cache of the children views for a forecast list item.
      */
-    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        // Within ForecastAdapterViewHolder ///////////////////////////////////////////////////////
+        // Within ForecastAdapterViewHolder //////////////////////////////////////////////////////
         // COMPLETED (18) Create a public final TextView variable called mWeatherTextView
         public final TextView mWeatherTextView;
 
@@ -55,8 +61,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         public ForecastAdapterViewHolder(View view) {
             super(view);
             mWeatherTextView = (TextView) view.findViewById(R.id.tv_weather_data);
+            itemView.setOnClickListener(this);
         }
         // Within ForecastAdapterViewHolder ///////////////////////////////////////////////////////
+        @Override
+        public void onClick(View view){
+            int clickedPosition = getAdapterPosition();
+            String weatherForDay = mWeatherData[clickedPosition];
+            mOnClickListener.onItemClickListener(weatherForDay);
+
+        }
     }
 
     // COMPLETED (24) Override onCreateViewHolder
@@ -69,7 +83,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
      * @param viewGroup The ViewGroup that these ViewHolders are contained within.
      * @param viewType  If your RecyclerView has more than one type of item (which ours doesn't) you
      *                  can use this viewType integer to provide a different layout. See
-     *                  {@link android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)}
+     *                  {@link RecyclerView.Adapter#getItemViewType(int)}
      *                  for more details.
      * @return A new ForecastAdapterViewHolder that holds the View for each list item
      */

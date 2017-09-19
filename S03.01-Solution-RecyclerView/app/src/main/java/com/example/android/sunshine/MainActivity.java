@@ -15,6 +15,8 @@
  */
 package com.example.android.sunshine;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.utilities.NetworkUtils;
@@ -33,7 +36,7 @@ import com.example.android.sunshine.utilities.OpenWeatherJsonUtils;
 
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ListItemClickListener{
 
     // COMPLETED (33) Delete mWeatherTextView
     // COMPLETED (34) Add a private RecyclerView variable called mRecyclerView
@@ -45,10 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar mLoadingIndicator;
 
+    private Toast mToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forecast);
+        setContentView(R.layout.forecast_activity);
 
         // COMPLETED (36) Delete the line where you get a reference to mWeatherTextView
 
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
          * The ForecastAdapter is responsible for linking our weather data with the Views that
          * will end up displaying our weather data.
          */
-        mForecastAdapter = new ForecastAdapter();
+        mForecastAdapter = new ForecastAdapter(this);
 
         // COMPLETED (44) Use mRecyclerView.setAdapter and pass in mForecastAdapter
         /* Setting the adapter attaches it to the RecyclerView in our layout. */
@@ -108,6 +112,24 @@ public class MainActivity extends AppCompatActivity {
      * This method will get the user's preferred location for weather, and then tell some
      * background method to get the weather data in the background.
      */
+
+    // TO MAKE THIS ACTIVITY IMPLEMENT THE CLICK LISTENER
+    @Override
+    public void  onItemClickListener(String weatherForDay){
+    if(mToast != null){
+        mToast.cancel();
+    }
+        String toastMessage = "Item is " + weatherForDay + " was clicked";
+        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+        mToast.show();
+
+        Context context = MainActivity.this;
+        Class destinationClass = DetailActivity.class;
+        Intent intent = new Intent(context, destinationClass);
+        intent.putExtra(Intent.EXTRA_TEXT, weatherForDay);
+        startActivity(intent);
+
+    }
     private void loadWeatherData() {
         showWeatherDataView();
 
